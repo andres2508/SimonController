@@ -16,22 +16,19 @@ class Tarjeta:
         self.maximum_frequency = maximum_frequency
         self.instant_bandwith = instant_bandwith
         self.isDisponible = True
-        self.isConnected = False
         self.direccion_ip = direccion_ip
         ###
         # Variables Servidor TCP
         ###
 
-        self.socket = sc
+        self.socket = socket
+        self.isConnected = True
 
     ##---------------------------------------------------------------------------------
     ## Metodos Comunicacion Embebidos
     ##---------------------------------------------------------------------------------
 
-    def inicializar_socket(self,socket):
 
-        self.socket = socket
-        self.isConnected = True
 
     ##---------------------------------------------------------------------------------
     ## Funcionalidades
