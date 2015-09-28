@@ -9,7 +9,7 @@ class Tarjeta:
     ##  Constructor
     ##---------------------------------------------------------------------------------
 
-    def __init__(self, tipo_tarjeta, direccion_ip, minimum_frequency, maximum_frequency, instant_bandwith):
+    def __init__(self, sc, tipo_tarjeta, direccion_ip, minimum_frequency, maximum_frequency, instant_bandwith):
 
         self.tipo_tarjeta = tipo_tarjeta
         self.minimum_frequency = minimum_frequency
@@ -22,7 +22,7 @@ class Tarjeta:
         # Variables Servidor TCP
         ###
 
-        self.socket = None
+        self.socket = sc
 
     ##---------------------------------------------------------------------------------
     ## Metodos Comunicacion Embebidos

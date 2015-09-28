@@ -1,10 +1,12 @@
+import os
+
 __author__ = 'Andres'
 
 import subprocess
 import threading
 import time
 import socket
-import Tarjeta
+from modelo import Tarjeta
 
 
 class Controlador(object):
@@ -20,8 +22,8 @@ class Controlador(object):
         ###
         # Variables Server
         ##
-        self.serverSocket = socket.socket()
-        self.ip_server = 'localhost'
+        self.serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.ip_server = ''
         self.host = socket.gethostbyname(self.ip_server)
         self.port = 1234
         self.cant_embebidos = 5
@@ -39,17 +41,21 @@ class Controlador(object):
         self.serverSocket.bind((self.host, self.port))
         self.serverSocket.listen(self.cant_embebidos)
 
-    def inicializar_sockets_embedidos(self):
+    def protocolo_inicial(self):
 
         for i in range(0, self.cant_embebidos):
-            sc, addr = self.serverSocket.accept()
-            tipoTarjeta = sc.recv(self.tamano_paquetes)
-            self.tarjetas[i].inicializar_socket(socket)
 
-    def inicializar_tarjeta(self, tipoTarjeta, direccion_ip):
+            sc, addr = self.serverSocket.accept()
+            print('Recibi una conexion de ', addr)
+            tipoTarjeta = str(sc.recv(self.tamano_paquetes))
+
+            self.inicializar_tarjeta(tipoTarjeta, addr, sc)
+            sc.send("OK")
+
+    def inicializar_tarjeta(self, tipoTarjeta, direccion_ip, sc):
 
         ##print('./config'+str(tipoTarjeta))
-        archive = open('config/' + tipoTarjeta, 'r')
+        archive = open('config/'+tipoTarjeta, 'r')
 
         linea = archive.readline().split("=")
         minimum_frequency = linea[1]
@@ -60,7 +66,7 @@ class Controlador(object):
         linea = archive.readline().split("=")
         instant_bandwith = linea[1]
 
-        nuevaTarjeta = Tarjeta(tipoTarjeta, direccion_ip, minimum_frequency, maximum_frequency, instant_bandwith)
+        nuevaTarjeta = Tarjeta.Tarjeta(sc, tipoTarjeta, direccion_ip, minimum_frequency, maximum_frequency, instant_bandwith)
         self.tarjetas.append(nuevaTarjeta)
 
     ##---------------------------------------------------------------------------------
@@ -106,5 +112,9 @@ class Controlador(object):
 
 if __name__ == '__main__':
 
+    variable = os.getcwd()
+    os.chdir('C:/Users/Andres/Dropbox/TRABAJO/i2t/Simon Controler/')
     mundo = Controlador()
-    mundo.inicializar_tarjeta('bladeRF', '192.168.1.1')
+    ##mundo.inicializar_tarjeta('bladeRF', '192.168.1.1')
+
+    mundo.protocolo_inicial()
