@@ -1,16 +1,16 @@
-import json
 
 __author__ = 'Andres'
 
 import time
-
+import socket
+import json
 
 class Medicion:
     ##---------------------------------------------------------------------------------
     ##  Constructor
     ##---------------------------------------------------------------------------------
 
-    def __init__(self, tipo_medicion, url_medicion, start_freq, final_freq, canalization, span_device):
+    def __init__(self, tipo_medicion, url_medicion, start_freq, final_freq, canalization, span_device, id):
         self.tipo_medicion = tipo_medicion
         self.url_medicion = url_medicion
         self.start_freq = start_freq
@@ -21,13 +21,19 @@ class Medicion:
         self.service_id = "No se que es"
         self.timestamp = time.strftime("%H:%M:%S")
         self.result = ""
-        self.id = ""
+        self.id = id
+        self.packet_size = 1024
     ##---------------------------------------------------------------------------------
     ##  Metodos
     ##---------------------------------------------------------------------------------
 
-    def correr_medicion(self):
-        return False
+    def correr_medicion(self, socketCliente):
+        self.isRun = True
+        socketCliente.send("Ejecutar Medicion")
+        socketCliente.send(self.tipo_medicion+";"+self.start_freq+";"+self.final_freq+";"+self.canalization+";"+self.span_device)
+        line = socketCliente.recv(self.packet_size)
+        self.result = json.loads(line)
+        self.isRun = False
 
 
     def terminar_medicion(self):
