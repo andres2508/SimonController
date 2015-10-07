@@ -32,7 +32,6 @@ class Controlador(object):
         self.inicializar_server()
         self.tarjetas = []
 
-
     ##---------------------------------------------------------------------------------
     ##  Metodo Server Socket
     ##---------------------------------------------------------------------------------
@@ -44,7 +43,6 @@ class Controlador(object):
     def protocolo_inicial(self):
 
         for i in range(0, self.cant_embebidos):
-
             sc, addr = self.serverSocket.accept()
             print('Recibi una conexion de ', addr)
             tipoTarjeta = str(sc.recv(self.tamano_paquetes))
@@ -52,10 +50,23 @@ class Controlador(object):
             self.inicializar_tarjeta(tipoTarjeta, addr, sc)
             sc.send("OK")
 
+    def correr_funcion(self, tipo_tarjeta, funcion, start_frec, final_frec, canalization, span_device):
+
+        encontro = False
+        encontrado = None
+        for i in range(0, self.cant_embebidos) and (encontro == False):
+            actual = self.tarjetas[i]
+
+            if actual.getTipo_tarjeta() == tipo_tarjeta:
+                encontro = True
+                encontrado = actual
+
+
+
     def inicializar_tarjeta(self, tipoTarjeta, direccion_ip, sc):
 
         ##print('./config'+str(tipoTarjeta))
-        archive = open('config/'+tipoTarjeta, 'r')
+        archive = open('config/' + tipoTarjeta, 'r')
 
         linea = archive.readline().split("=")
         minimum_frequency = linea[1]
@@ -66,7 +77,8 @@ class Controlador(object):
         linea = archive.readline().split("=")
         instant_bandwith = linea[1]
 
-        nuevaTarjeta = Tarjeta.Tarjeta(sc, tipoTarjeta, direccion_ip, minimum_frequency, maximum_frequency, instant_bandwith)
+        nuevaTarjeta = Tarjeta.Tarjeta(sc, tipoTarjeta, direccion_ip, minimum_frequency, maximum_frequency,
+                                       instant_bandwith)
         self.tarjetas.append(nuevaTarjeta)
 
     ##---------------------------------------------------------------------------------
@@ -106,12 +118,12 @@ class Controlador(object):
         self.terminar = True
         return "Termino proceso"
 
-    ##---------------------------------------------------------------------------------
-    ##  Main
-    ##---------------------------------------------------------------------------------
+        ##---------------------------------------------------------------------------------
+        ##  Main
+        ##---------------------------------------------------------------------------------
+
 
 if __name__ == '__main__':
-
     variable = os.getcwd()
     os.chdir('C:/Users/Andres/Dropbox/TRABAJO/i2t/Simon Controler/')
     mundo = Controlador()

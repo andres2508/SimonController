@@ -2,6 +2,7 @@ __author__ = 'Andres'
 
 import SocketServer
 import socket
+from modelo import Medicion
 
 class Tarjeta:
 
@@ -17,6 +18,7 @@ class Tarjeta:
         self.instant_bandwith = instant_bandwith
         self.isDisponible = True
         self.direccion_ip = direccion_ip
+        self.mediciones = []
         ###
         # Variables Servidor TCP
         ###
@@ -25,14 +27,17 @@ class Tarjeta:
         self.isConnected = True
 
     ##---------------------------------------------------------------------------------
-    ## Metodos Comunicacion Embebidos
-    ##---------------------------------------------------------------------------------
-
-
-
-    ##---------------------------------------------------------------------------------
     ## Funcionalidades
     ##---------------------------------------------------------------------------------
+
+    def correr_funcion(self, funcion, start_frec, final_frec, canalization, span_device):
+
+        if funcion == "occ":
+            nueva_medicion = Medicion.Medicion(funcion,"funciones/"+self.tipo_tarjeta+"/Ocupacion/SIMONES_Ocupacion.py",start_frec,final_frec,canalization,
+                                               span_device)
+
+            nueva_medicion.correr_medicion()
+            self.mediciones.append(nueva_medicion)
 
 
 
@@ -58,4 +63,6 @@ class Tarjeta:
     def setMaximum_Frecuency(self, maximum_frecuency):
         self.maximum_frecuency = maximum_frecuency
 
+    def getTipo_tarjeta(self):
+        return self.tipo_tarjeta
 

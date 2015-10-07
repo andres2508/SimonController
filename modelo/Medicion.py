@@ -26,6 +26,10 @@ class Medicion:
     ##  Metodos
     ##---------------------------------------------------------------------------------
 
+    def correr_medicion(self):
+        return False
+
+
     def terminar_medicion(self):
         self.isRun = True
 
