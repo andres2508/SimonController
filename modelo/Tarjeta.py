@@ -13,6 +13,7 @@ class Tarjeta:
 
     def __init__(self, sc, tipo_tarjeta, direccion_ip, minimum_frequency, maximum_frequency, instant_bandwith):
         self.tipo_tarjeta = tipo_tarjeta
+        self.id_tarjeta = 0
         self.minimum_frequency = minimum_frequency
         self.maximum_frequency = maximum_frequency
         self.instant_bandwith = instant_bandwith
@@ -23,7 +24,7 @@ class Tarjeta:
         # Variables Servidor TCP
         ###
 
-        self.socket = socket
+        self.socket = sc
         self.isConnected = True
 
     ##---------------------------------------------------------------------------------
@@ -36,9 +37,9 @@ class Tarjeta:
                                                "funciones/" + self.tipo_tarjeta + "/Ocupacion/SIMONES_Ocupacion.py",
                                                start_frec, final_frec, canalization,
                                                span_device, measurement_id)
-
-            t = threading.Thread(target=nueva_medicion.correr_medicion, args=(self.socket,))
-            t.start()
+            nueva_medicion.correr_medicion(self.socket)
+    #         t = threading.Thread(target=nueva_medicion.correr_medicion, args=(self.socket,))
+    #        t.start()
             self.mediciones.append(nueva_medicion)
 
     ##---------------------------------------------------------------------------------
@@ -65,3 +66,6 @@ class Tarjeta:
 
     def getTipo_tarjeta(self):
         return self.tipo_tarjeta
+
+    def getId_tarjeta(self):
+        return self.id_tarjeta

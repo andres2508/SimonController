@@ -30,7 +30,11 @@ class Medicion:
     def correr_medicion(self, socketCliente):
         self.isRun = True
         socketCliente.send("Ejecutar Medicion")
-        socketCliente.send(self.tipo_medicion+";"+self.start_freq+";"+self.final_freq+";"+self.canalization+";"+self.span_device)
+        mensaje = str(socketCliente.recv(self.packet_size))
+        #print("Estado de ejecucion: "+)
+        socketCliente.send(str(self.tipo_medicion)+';' + str(self.start_freq)+';'+str(self.final_freq)+';'+str(self.canalization)+';'+str(self.span_device))
+        mensaje = str(socketCliente.recv(self.packet_size))
+        #print("Estado de ejecucion: "+str(self.socketCliente.recv(self.packet_size)))
         line = socketCliente.recv(self.packet_size)
         self.result = json.loads(line)
         self.isRun = False

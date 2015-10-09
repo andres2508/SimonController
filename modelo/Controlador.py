@@ -26,7 +26,7 @@ class Controlador(object):
         self.ip_server = ''
         self.host = socket.gethostbyname(self.ip_server)
         self.port = 1234
-        self.cant_embebidos = 5
+        self.cant_embebidos = 1
         self.tamano_paquetes = 1024
 
         self.inicializar_server()
@@ -49,17 +49,20 @@ class Controlador(object):
 
             self.inicializar_tarjeta(tipoTarjeta, addr, sc)
             sc.send("OK")
+            mensaje = str(sc.recv(self.tamano_paquetes))
 
-    def correr_funcion(self, tipo_tarjeta, funcion, start_frec, final_frec, canalization, span_device):
+    def correr_funcion(self, id_tarjeta, funcion, start_frec, final_frec, canalization, span_device):
 
         encontro = False
         encontrado = None
-        for i in range(0, self.cant_embebidos) and (encontro == False):
+        for i in range(0, self.cant_embebidos):
             actual = self.tarjetas[i]
 
-            if actual.getTipo_tarjeta() == tipo_tarjeta:
+            if actual.getId_tarjeta() == id_tarjeta:
                 encontro = True
                 encontrado = actual
+
+        encontrado.correr_funcion(funcion, 8, start_frec, final_frec, canalization, span_device)
 
 
 
@@ -130,3 +133,4 @@ if __name__ == '__main__':
     ##mundo.inicializar_tarjeta('bladeRF', '192.168.1.1')
 
     mundo.protocolo_inicial()
+    mundo.correr_funcion(0, "occ", 60e3, 3.8e9, 150e3, 20e6)
