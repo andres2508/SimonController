@@ -2,7 +2,8 @@ __author__ = 'Andres'
 
 import SocketServer
 import socket
-from modelo import Medicion
+#from modelo import Medicion
+import Medicion
 import threading
 
 
@@ -31,23 +32,28 @@ class Tarjeta:
     ## Funcionalidades
     ##---------------------------------------------------------------------------------
 
-    def correr_funcion(self, funcion, measurement_id, start_frec, final_frec, canalization, span_device):
-        if funcion == "occ":
+    def correr_funcion(self, funcion, measurement_id, start_frec, final_frec, canalization, span_device, time):
+        resultado = "Sin resultado"
+	if funcion == "occ":
             nueva_medicion = Medicion.Medicion(funcion,
                                                "funciones/" + self.tipo_tarjeta + "/Ocupacion/SIMONES_Ocupacion.py",
                                                start_frec, final_frec, canalization,
-                                               span_device, measurement_id)
-            nueva_medicion.correr_medicion(self.socket)
+                                               span_device, measurement_id, time)
+            resultado = nueva_medicion.correr_medicion(self.socket)
     #         t = threading.Thread(target=nueva_medicion.correr_medicion, args=(self.socket,))
     #        t.start()
-            self.mediciones.append(nueva_medicion)
+    #        self.mediciones.append(nueva_medicion)
+	return resultado
 
+    def buscar_medicion(self, measurement_id):
+	return "hola"	
+	
     ##---------------------------------------------------------------------------------
     ## Gets and Sets
     ##---------------------------------------------------------------------------------
 
     def getMinimum_Frecuency(self):
-        return self.maximum_frecuency
+        return self.minimum_frecuency
 
     def getMaximum_Frecuency(self):
         return self.maximum_frecuency

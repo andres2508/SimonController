@@ -8,7 +8,7 @@ class Api(object):
     ##---------------------------------------------------------------------------------
 
     def __init__(self):
-        self.administrador = Controlador.Administrador()
+        self.administrador = Controlador()
         self.p = None
 
     ##---------------------------------------------------------------------------------

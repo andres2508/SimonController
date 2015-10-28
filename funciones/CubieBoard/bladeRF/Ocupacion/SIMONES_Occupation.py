@@ -204,11 +204,30 @@ class SIMONES_Occupation(gr.top_block):
     def set_canalization(self, canalization):
         self.canalization = canalization
 
+    def stop_udp(self):
+	blocks.udp_sink_sptr.disconnect(self.blocks_udp_sink_0)
+        self.xmlrpc_server_0.server_close()
+
+
 if __name__ == '__main__':
     parser = OptionParser(option_class=eng_option, usage="%prog: [options]")
     (options, args) = parser.parse_args()
     tb = SIMONES_Occupation()
     tb.start()
-    raw_input('Press Enter to quit: ')
+
+    sys.stdout.write("Esperando STOP" + "\n")
+    sys.stdout.flush()
+
+    terminar = sys.stdin.readline()
+
+    sys.stdout.write("Llego el STOP" + "\n")
+    sys.stdout.flush()
+
+    tb.stop_udp()
+
+    sys.stdout.write("termino flujo" + "\n")
+    sys.stdout.flush()
+
+
     tb.stop()
     tb.wait()

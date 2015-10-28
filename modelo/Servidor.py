@@ -1,4 +1,4 @@
-from SimonControler.servidor import Api
+import Api
 import os
 __author__ = 'Andres'
 
@@ -7,11 +7,10 @@ import json
 
 class Servidor(object):
 
-#    api = Api()
-
+    api = Api.Api()
+    @cherrypy.expose
     def index(self):
         return "Hola Mundo!"
-        index.exposed = True
 
     @cherrypy.expose
     def update(self):
@@ -22,10 +21,10 @@ class Servidor(object):
 	print(boby)
         return "Updated %r." % (body,)
 
-    cherrypy.config.update({'server.socket_host':'192.168.160.95'})
+    cherrypy.config.update({'server.socket_host':'192.168.1.21','server.socket_port':9999})
 
 if __name__=='__main__':
 #    print(os.getcwd())
-    os.chdir('/home/andres/Escritorio/Simon Controler')
+#    os.chdir('/home/andres/Escritorio/Simon Controler')
     print(os.getcwd())
     cherrypy.quickstart(Servidor())

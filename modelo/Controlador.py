@@ -6,8 +6,8 @@ import subprocess
 import threading
 import time
 import socket
-from modelo import Tarjeta
-
+#from modelo import Tarjeta
+import Tarjeta
 
 class Controlador(object):
     ##---------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ class Controlador(object):
             sc.send("OK")
             mensaje = str(sc.recv(self.tamano_paquetes))
 
-    def correr_funcion(self, id_tarjeta, funcion, start_frec, final_frec, canalization, span_device):
+    def correr_funcion(self, id_tarjeta, funcion, start_frec, final_frec, canalization, span_device, time):
 
         encontro = False
         encontrado = None
@@ -62,14 +62,14 @@ class Controlador(object):
                 encontro = True
                 encontrado = actual
 
-        encontrado.correr_funcion(funcion, 8, start_frec, final_frec, canalization, span_device)
-
+        resultado = encontrado.correr_funcion(funcion, 8, start_frec, final_frec, canalization, span_device, time)
+	return resultado
 
 
     def inicializar_tarjeta(self, tipoTarjeta, direccion_ip, sc):
 
         ##print('./config'+str(tipoTarjeta))
-        archive = open('config/' + tipoTarjeta, 'r')
+        archive = open('/home/andres/Escritorio/SimonControler/config/' + tipoTarjeta, 'r')
 
         linea = archive.readline().split("=")
         minimum_frequency = linea[1]
@@ -128,9 +128,12 @@ class Controlador(object):
 
 if __name__ == '__main__':
     variable = os.getcwd()
-    os.chdir('C:/Users/Andres/Dropbox/TRABAJO/i2t/Simon Controler/')
+    #os.chdir('C:/Users/Andres/Dropbox/TRABAJO/i2t/Simon Controler/')
+#    os.chdir('/home/andres/Escritorio/Simon Controler')
+    print(os.getcwd())
     mundo = Controlador()
     ##mundo.inicializar_tarjeta('bladeRF', '192.168.1.1')
 
     mundo.protocolo_inicial()
-    mundo.correr_funcion(0, "occ", 60e3, 3.8e9, 150e3, 20e6)
+    respuesta = mundo.correr_funcion(0, "occ", "88000000", "108000000", "1000000", "20000000","0.1")
+    print(respuesta)
