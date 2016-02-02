@@ -54,8 +54,8 @@ class Api(object):
 
 
     @cherrypy.expose
-    def measurement_example(self,funcion, start_frec, final_frec, canalization, span_device, time):
-	resultado1 = self.administrador.correr_funcion(0, funcion, start_frec, final_frec, canalization, span_device,time)
+    def measurement_example(self,funcion, start_frec, final_frec, canalization, span_device, time, samples, id):
+	resultado1 = self.administrador.correr_funcion(0, funcion, start_frec, final_frec, canalization, span_device,time, samples, id)
 	resultado = json.loads(resultado1)
 	name_measurement = resultado['name_measurement']
 	umbral = resultado['umbral']

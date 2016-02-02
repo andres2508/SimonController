@@ -71,7 +71,7 @@ class Controlador(object):
     def inicializar_tarjeta(self, tipoTarjeta, direccion_ip, sc):
 
         ##print('./config'+str(tipoTarjeta))
-        archive = open('/home/andres/Escritorio/SimonControler/config/' + tipoTarjeta, 'r')
+        archive = open('/home/andres/Escritorio/SimonController/config/' + tipoTarjeta, 'r')
 
         linea = archive.readline().split("=")
         minimum_frequency = linea[1]
@@ -137,5 +137,5 @@ if __name__ == '__main__':
     ##mundo.inicializar_tarjeta('bladeRF', '192.168.1.1')
 
     mundo.protocolo_inicial()
-    respuesta = mundo.correr_funcion(0, "occ", "88000000", "108000000", "1000000", "20000000","0.1")
-    print(respuesta)
+#    respuesta = mundo.correr_funcion(0, "occ", "88000000", "108000000", "1000000", "20000000","0.1")
+#    print(respuesta)
