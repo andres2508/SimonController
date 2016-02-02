@@ -47,7 +47,7 @@ class Api(object):
         body = json.loads(rawbody)
         # do_something_with(body)
 	print("antes de enviar resultado")
-	resultado = self.administrador.correr_funcion(0,body['measurement_type'], body['start_freq'], body['final_freq'], body['canalization'], body['span_device'], body['time'])
+	resultado = self.administrador.correr_funcion(0,body['measurement_type'], body['start_freq'], body['final_freq'], body['canalization'], body['span_device'], body['time'], body['samples'],body['id'])
         print((resultado))
 
         return (resultado)

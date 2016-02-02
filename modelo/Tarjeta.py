@@ -5,6 +5,7 @@ import socket
 #from modelo import Medicion
 import Medicion
 import threading
+import json
 
 
 class Tarjeta:
@@ -32,22 +33,29 @@ class Tarjeta:
     ## Funcionalidades
     ##---------------------------------------------------------------------------------
 
-    def correr_funcion(self, funcion, measurement_id, start_frec, final_frec, canalization, span_device, time):
+    def correr_funcion(self, funcion, measurement_id, start_frec, final_frec, canalization, span_device, time, samples):
         resultado = "Sin resultado"
-	if funcion == "occ":
-            nueva_medicion = Medicion.Medicion(funcion,
-                                               "funciones/" + self.tipo_tarjeta + "/Ocupacion/SIMONES_Ocupacion.py",
-                                               start_frec, final_frec, canalization,
-                                               span_device, measurement_id, time)
-            resultado = nueva_medicion.correr_medicion(self.socket)
+
+        for i in range(0, samples):
+            if funcion == "occ":
+                    nueva_medicion = Medicion.Medicion(funcion,
+                                                       "funciones/" + self.tipo_tarjeta + "/Ocupacion/SIMONES_Ocupacion.py",
+                                                       start_frec, final_frec, canalization,
+                                                       span_device, measurement_id, time)
+                    resultado = nueva_medicion.correr_medicion(self.socket)
+                    self.grabar_samples_measurement(resultado,measurement_id,i)
     #         t = threading.Thread(target=nueva_medicion.correr_medicion, args=(self.socket,))
     #        t.start()
     #        self.mediciones.append(nueva_medicion)
-	return resultado
+        return resultado
+
+    def grabar_samples_measurement(self, resultado, measurement_id, counter):
+        with open(measurement_id+"-"+counter,"w") as outfile:
+            json.dump(resultado, outfile)
 
     def buscar_medicion(self, measurement_id):
-	return "hola"	
-	
+        return "hola"
+
     ##---------------------------------------------------------------------------------
     ## Gets and Sets
     ##---------------------------------------------------------------------------------

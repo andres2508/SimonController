@@ -91,23 +91,32 @@ class occupation_control():
             time.sleep(1)
 
     def data_validation(self, args):
-        if type(args.min_freq) not in (int, float, long):
-            raise TypeError, "Mininum frequency has to be a number"
-        elif type(args.min_freq) not in (int, float, long):
-            raise TypeError, "Mininum frequency has to be a number"
-        elif type(args.span) not in (int, float, long):
-            raise TypeError, "Mininum frequency has to be a number"
-        elif type(args.canalization) not in (int, float, long):
-            raise TypeError, "Mininum frequency has to be a number"
-        else:
-            self.min_freq = args.min_freq
-            self.max_freq = args.max_freq
-            self.service_start_freq = args.service_start_freq
-            self.service_stop_freq = args.service_stop_freq
-            self.device_span = args.span
-            self.canalization = args.canalization
-            self.fft_size = args.fft_size
-            self.measure_time = args.measure_time * 60
+		if type(args.min_freq) not in (int, float, long):
+			raise TypeError, "Mininum frequency has to be a number"
+		elif type(args.max_freq) not in (int, float, long):
+			raise TypeError, "Mininum frequency has to be a number"
+		elif type(args.service_start_freq) not in (int, float, long):
+			raise TypeError, "Start frequency of service has to be a number"
+		elif type(args.service_stop_freq) not in (int, float, long):
+			raise TypeError, "Stop frequency of service has to be a number"
+		elif type(args.span) not in (int, float, long):
+			raise TypeError, "Span of device has to be a number"
+		elif type(args.canalization) not in (int, float, long):
+			raise TypeError, "Canalization has to be a number"
+		elif type(args.fft_size) not in (int, float, long):
+			raise TypeError, "FFT size has to be a number"
+		elif type(args.measure_time) not in (int, float, long):
+			raise TypeError, "Measure time has to be a number"
+		else:
+			self.id_measure = args.id_measure
+			self.min_freq = args.min_freq
+			self.max_freq = args.max_freq
+			self.service_start_freq = args.service_start_freq
+			self.service_stop_freq = args.service_stop_freq
+			self.device_span = args.span
+			self.canalization = args.canalization
+			self.fft_size = args.fft_size
+			self.measure_time = args.measure_time * 60
 
 
     #Determinar la cantidad de mediciones que se deben realizar para un servicio y configurar la primera medicion del servicio
@@ -209,6 +218,9 @@ class occupation_control():
             float_values[x] = float_values[x] / self.average
         return float_values
 
+	#Calcula el piso de ruido y compara el nivel de senal para tener los mas altos
+	#Agrupa los valores que pertenecen a un canal y si el 80% supera el piso de rudio
+	#se considera que el canal esta ocupado
     def threshold_detector(self):
         channels_list = []
         count = 0

@@ -51,7 +51,7 @@ class Controlador(object):
             sc.send("OK")
             mensaje = str(sc.recv(self.tamano_paquetes))
 
-    def correr_funcion(self, id_tarjeta, funcion, start_frec, final_frec, canalization, span_device, time):
+    def correr_funcion(self, id_tarjeta, funcion, start_frec, final_frec, canalization, span_device, time, samples, id):
 
         encontro = False
         encontrado = None
@@ -61,8 +61,10 @@ class Controlador(object):
             if actual.getId_tarjeta() == id_tarjeta:
                 encontro = True
                 encontrado = actual
-
-        resultado = encontrado.correr_funcion(funcion, 8, start_frec, final_frec, canalization, span_device, time)
+                break
+            else:
+                continue
+        resultado = encontrado.correr_funcion(funcion, 8, start_frec, final_frec, canalization, span_device, time, samples)
 	return resultado
 
 
