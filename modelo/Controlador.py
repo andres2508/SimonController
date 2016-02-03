@@ -68,6 +68,7 @@ class Controlador(object):
 	return resultado
 
 
+
     def inicializar_tarjeta(self, tipoTarjeta, direccion_ip, sc):
 
         ##print('./config'+str(tipoTarjeta))
