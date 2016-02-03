@@ -2,11 +2,13 @@ __author__ = 'Andres'
 
 import SocketServer
 import socket
-#from modelo import Medicion
+# from modelo import Medicion
 import Medicion
 import threading
 import json
 import os
+import urllib2
+
 
 class Tarjeta:
     ##---------------------------------------------------------------------------------
@@ -35,29 +37,37 @@ class Tarjeta:
 
     def correr_funcion(self, funcion, measurement_id, start_frec, final_frec, canalization, span_device, time, samples):
         resultado = "Sin resultado"
-	print "esto es funcion "+funcion
         for i in range(0, samples):
-	    print "antes del if"
             if funcion == "occ":
-		    print "entro al if"
-                    nueva_medicion = Medicion.Medicion(funcion,
-                                                       "funciones/" + self.tipo_tarjeta + "/Ocupacion/SIMONES_Ocupacion.py",
-                                                       start_frec, final_frec, canalization,
-                                                       span_device, measurement_id, time)
-		    print "antes de correr medicion"
-                    resultado = nueva_medicion.correr_medicion(self.socket)
-                    self.grabar_samples_measurement(resultado,measurement_id,i)
+                nueva_medicion = Medicion.Medicion(funcion,
+                                                   "funciones/" + self.tipo_tarjeta + "/Ocupacion/SIMONES_Ocupacion.py",
+                                                   start_frec, final_frec, canalization,
+                                                   span_device, measurement_id, time)
+                resultado = nueva_medicion.correr_medicion(self.socket)
+                self.grabar_samples_measurement(resultado, measurement_id, i)
 
-    #         t = threading.Thread(target=nueva_medicion.correr_medicion, args=(self.socket,))
-    #        t.start()
-    #        self.mediciones.append(nueva_medicion)
-        return resultado
+                #         t = threading.Thread(target=nueva_medicion.correr_medicion, args=(self.socket,))
+                #        t.start()
+                #        self.mediciones.append(nueva_medicion)
+        self.send_post_result(measurement_id, samples)
+
+
+    def send_post_result(self,measurement_id,samples):
+        data_json = None
+        url = 'http://192.168.160.96:9999/prueba_post'
+        for i in range(0, samples):
+            file_name = str(measurement_id)+ "-" + str(i)
+            with open("/home/andres/Escritorio/SimonController/modelo/results/"+file_name) as data_file:
+                data_json = json.load(data_file)
+                req = urllib2.Request(url)
+                req.add_header('Content-Type', 'application/json')
+                response = urllib2.urlopen(req, data_json)
+
+
 
     def grabar_samples_measurement(self, resultado, measurement_id, counter):
-	print measurement_id
-	print counter
-	file_name = str(measurement_id) +"-"+str(counter)
-        with open("/home/andres/Escritorio/SimonController/modelo/results/"+file_name,"w") as outfile:
+        file_name = str(measurement_id) + "-" + str(counter)
+        with open("/home/andres/Escritorio/SimonController/modelo/results/" + file_name, "w") as outfile:
             json.dump(resultado, outfile)
 
     def buscar_medicion(self, measurement_id):
