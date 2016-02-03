@@ -27,11 +27,11 @@ class Tarjeta_Cliente():
     def correr_occupation(self, inicial_freq, final_freq, canalization, span_device, time_local):
 
 	
-        subproceso1 = subprocess.Popen("python /home/andres/Escritorio/SimonControler/funciones/"+self.tipoControlador+"/"+self.tipoTarjeta
+        subproceso1 = subprocess.Popen("python /home/andres/Escritorio/SimonController/funciones/"+self.tipoControlador+"/"+self.tipoTarjeta
                                       +"/Ocupacion/SIMONES_Occupation.py",shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE)
 	time.sleep(12)
 
-        subproceso2 = subprocess.Popen("python /home/andres/Escritorio/SimonControler/funciones/"+self.tipoControlador+"/"+self.tipoTarjeta
+        subproceso2 = subprocess.Popen("python /home/andres/Escritorio/SimonController/funciones/"+self.tipoControlador+"/"+self.tipoTarjeta
                                       +"/Ocupacion/Fusion_Center_Occupation.py",shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE)
 	
 	time.sleep(1)

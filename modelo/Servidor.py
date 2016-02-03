@@ -21,7 +21,7 @@ class Servidor(object):
 	print(boby)
         return "Updated %r." % (body,)
 
-    cherrypy.config.update({'server.socket_host':'192.168.1.21','server.socket_port':9999})
+    cherrypy.config.update({'server.socket_host':'192.168.160.96','server.socket_port':9999})
 
 if __name__=='__main__':
 #    print(os.getcwd())

@@ -6,7 +6,7 @@ import socket
 import Medicion
 import threading
 import json
-
+import os
 
 class Tarjeta:
     ##---------------------------------------------------------------------------------
@@ -35,22 +35,29 @@ class Tarjeta:
 
     def correr_funcion(self, funcion, measurement_id, start_frec, final_frec, canalization, span_device, time, samples):
         resultado = "Sin resultado"
-
+	print "esto es funcion "+funcion
         for i in range(0, samples):
+	    print "antes del if"
             if funcion == "occ":
+		    print "entro al if"
                     nueva_medicion = Medicion.Medicion(funcion,
                                                        "funciones/" + self.tipo_tarjeta + "/Ocupacion/SIMONES_Ocupacion.py",
                                                        start_frec, final_frec, canalization,
                                                        span_device, measurement_id, time)
+		    print "antes de correr medicion"
                     resultado = nueva_medicion.correr_medicion(self.socket)
                     self.grabar_samples_measurement(resultado,measurement_id,i)
+
     #         t = threading.Thread(target=nueva_medicion.correr_medicion, args=(self.socket,))
     #        t.start()
     #        self.mediciones.append(nueva_medicion)
         return resultado
 
     def grabar_samples_measurement(self, resultado, measurement_id, counter):
-        with open(measurement_id+"-"+counter,"w") as outfile:
+	print measurement_id
+	print counter
+	file_name = str(measurement_id) +"-"+str(counter)
+        with open("/home/andres/Escritorio/SimonController/modelo/results/"+file_name,"w") as outfile:
             json.dump(resultado, outfile)
 
     def buscar_medicion(self, measurement_id):
