@@ -15,13 +15,13 @@ class Servidor(object):
         return "Hola Mundo!"
 
     @cherrypy.expose
-    def prueba_post(self):
+    def post(self):
         cl = cherrypy.request.headers['Content-Length']
         rawbody = cherrypy.request.body.read(int(cl))
         body = json.loads(rawbody)
         print body
         # do_something_with(body)
-        return "Updated %r." % (body,)
+        return "llego post"
 
     cherrypy.config.update({'server.socket_host': '192.168.160.96', 'server.socket_port': 9999})
 

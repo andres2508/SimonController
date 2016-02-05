@@ -54,11 +54,13 @@ class Tarjeta:
 
     def send_post_result(self,measurement_id,samples):
         data_json = None
-        url = 'http://192.168.160.96:9999/prueba_post'
+        url = 'http://192.168.160.96:9999/post'
         for i in range(0, samples):
             file_name = str(measurement_id)+ "-" + str(i)
             with open("/home/andres/Escritorio/SimonController/modelo/results/"+file_name) as data_file:
                 data_json = json.load(data_file)
+		print "ESTE ES EL JSON"
+		print data_json
                 req = urllib2.Request(url)
                 req.add_header('Content-Type', 'application/json')
                 response = urllib2.urlopen(req, data_json)
