@@ -52,7 +52,6 @@ class Api(object):
                                                       body['final_freq'], body['canalization'], body['span_device'],
                                                       body['time'], body['samples'], body['id'])
         print((resultado))
-
         return (resultado)
 
     @cherrypy.expose
