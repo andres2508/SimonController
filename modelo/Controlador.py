@@ -8,6 +8,7 @@ import time
 import socket
 #from modelo import Tarjeta
 import Tarjeta
+import json
 
 class Controlador(object):
     ##---------------------------------------------------------------------------------
@@ -123,6 +124,11 @@ class Controlador(object):
     def terminar_proceso(self):
         self.terminar = True
         return "Termino proceso"
+
+    def buscar_resultado(self, id, muestra):
+        file_name = str(id)+str(muestra)
+        with open("/home/andres/Escritorio/SimonController/modelo/results/"+file_name) as data_file:
+            data_json = json.load(data_file)
 
         ##---------------------------------------------------------------------------------
         ##  Main

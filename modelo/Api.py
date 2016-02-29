@@ -42,6 +42,15 @@ class Api(object):
         return respuesta
 
     @cherrypy.expose
+    def results(self):
+        cl = cherrypy.request.headers['Content-Length']
+        rawbody = cherrypy.request.body.read(int(cl))
+        body = json.loads(rawbody)
+        # do_something_with(body)
+        resultado = self.administrador.buscar_resultado(body['id'],body['sample'])
+        return resultado
+    
+    @cherrypy.expose
     def measurement(self):
         cl = cherrypy.request.headers['Content-Length']
         rawbody = cherrypy.request.body.read(int(cl))
