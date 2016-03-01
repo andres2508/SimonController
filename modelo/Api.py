@@ -49,7 +49,7 @@ class Api(object):
         # do_something_with(body)
         resultado = self.administrador.buscar_resultado(body['id'],body['sample'])
         return resultado
-    
+
     @cherrypy.expose
     def measurement(self):
         cl = cherrypy.request.headers['Content-Length']

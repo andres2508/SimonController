@@ -263,7 +263,7 @@ class occupation_control():
         data['start_freq'] = self.measure_start_freq
         data['stop_freq'] = self.measure_stop_freq
         data['span'] = self.measure_span
-#        data['sample_trace'] = self.trace
+        data['sample_trace'] = self.trace
         data['ref_level'] = 'None'
         data['sweep_time'] = 'None'
         data['res_bwitdh'] = 'None'
